@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.2
+
+- Corrige os achados do verificador de segurança Bandit que bloquearam a v1.2.1.
+- Remove tratamentos silenciosos `try/except: pass|continue` e registra falhas não fatais no log do QGIS.
+- Endurece a importação ISO 19139: limita o tamanho do XML e recusa declarações `DOCTYPE` e `ENTITY`.
+- Documenta os usos seguros de `xml.etree.ElementTree` para escrita e leitura local protegida.
+- Corrige os 17 apontamentos do verificador Qt6 exibidos pelo portal QGIS:
+  - enums PyQt/QGIS passam a usar escopo explícito;
+  - `exec_()` passa a `exec()`.
+- Mantém integralmente o comportamento funcional validado da v1.2.1, inclusive escala e faixa de escala.
+- Versão estável (`experimental=False`).
+
+
 ## 1.2.1 — estável
 
 - Corrige a ausência da Faixa de Escala no XML quando o usuário informa somente a escala de referência.

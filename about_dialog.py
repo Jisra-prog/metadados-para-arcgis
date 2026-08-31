@@ -15,7 +15,7 @@ class AboutDialog(QDialog):
 
         title = QLabel(
             "<h2 style='margin:0'>Metadados para ArcGIS</h2>"
-            "<p style='margin:4px 0 0 0'><b>Versão 1.2.1</b></p>"
+            "<p style='margin:4px 0 0 0'><b>Versão 1.2.2</b></p>"
         )
         layout.addWidget(title)
 
@@ -31,13 +31,12 @@ class AboutDialog(QDialog):
             "da <b>Secretaria Nacional de Segurança Hídrica (SNSH)</b>.</p>"
             "<p><b>Compatibilidade alvo:</b> QGIS 3.44.x<br>"
             "<b>Licença:</b> GPL-2.0-or-later</p>"
-            "<p>Esta versão permanece experimental enquanto o fluxo de correspondência "
-            "de metadados QGIS → ArcGIS é validado.</p>"
+            "<p>Versão estável validada no QGIS 3.44.13 e no ArcGIS Pro.</p>"
         )
         body.setWordWrap(True)
         layout.addWidget(body)
 
-        buttons = QDialogButtonBox(QDialogButtonBox.Close)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
         buttons.clicked.connect(self.accept)
         layout.addWidget(buttons)

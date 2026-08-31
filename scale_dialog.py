@@ -152,8 +152,8 @@ class ScaleChoiceDialog(QDialog):
         self.no_scale_radio.toggled.connect(self._update_enabled_state)
         self.manual_radio.toggled.connect(self._update_enabled_state)
 
-        buttons = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
-        buttons.button(QDialogButtonBox.Ok).setText("Continuar exportação")
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok)
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Continuar exportação")
         buttons.accepted.connect(self._validate_and_accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -166,8 +166,8 @@ class ScaleChoiceDialog(QDialog):
             value = float(value)
             if value > 0:
                 return value
-        except Exception:
-            pass
+        except (TypeError, ValueError):
+            return None
         return None
 
     def _read_stored_scale(self):
@@ -183,7 +183,7 @@ class ScaleChoiceDialog(QDialog):
         denominator = int(round(self.current_canvas_scale))
         self.manual_radio.setChecked(True)
         self.scale_edit.setText(str(denominator))
-        self.scale_edit.setFocus(Qt.OtherFocusReason)
+        self.scale_edit.setFocus(Qt.FocusReason.OtherFocusReason)
         self.scale_edit.selectAll()
         self.status_label.setText(
             f"Escala atual do mapa copiada como sugestão: {format_scale(denominator)}. "
@@ -210,7 +210,7 @@ class ScaleChoiceDialog(QDialog):
                 "Informe uma escala válida, por exemplo 50000 ou 1:50.000, "
                 "ou selecione ‘Não informar escala e continuar a exportação’.",
             )
-            self.scale_edit.setFocus(Qt.OtherFocusReason)
+            self.scale_edit.setFocus(Qt.FocusReason.OtherFocusReason)
             return
 
         self._scale = str(denominator)

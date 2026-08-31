@@ -1,4 +1,4 @@
-# Metadados para ArcGIS — v1.2.1
+# Metadados para ArcGIS — v1.2.2
 
 Complemento para **QGIS 3.44.x** que exporta metadados de camadas QGIS para XML compatível com ArcGIS e converte XML **ISO 19139 / MGB**.
 
@@ -47,14 +47,25 @@ No QGIS:
 
 ## Publicação
 
-A versão **1.2.1 foi validada no QGIS 3.44.13 e no ArcGIS Pro** e está preparada como versão estável para submissão ao repositório oficial do QGIS.
-
-Repositório:
+Repositório planejado:
 
 `https://github.com/Jisra-prog/metadados-para-arcgis`
+
+A versão **1.2.1 foi validada no QGIS 3.44.13 e no ArcGIS Pro** e está preparada como versão estável para submissão ao repositório oficial do QGIS.
 
 Contato público do plugin: `Isilvajorge3@gmail.com`.
 
 ## Licença
 
 GPL-2.0-or-later.
+
+
+## Segurança e compatibilidade — v1.2.2
+
+A versão 1.2.2 foi preparada para atender ao scanner do repositório oficial do QGIS:
+
+- tratamento explícito de falhas não fatais em vez de exceções silenciosas;
+- leitura ISO 19139 protegida contra DTD/ENTITY e limitada a 50 MB;
+- enums compatíveis com Qt6 e uso de `exec()`.
+
+O comportamento de conversão validado na v1.2.1 foi preservado.

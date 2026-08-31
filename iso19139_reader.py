@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """Read ISO 19115/19139 (including MGB 2.0 style documents) into MetadataRecord."""
 
+import os
 import re
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # nosec B405 -- guarded local XML parser
 
 from .metadata_model import MetadataRecord, unique
 
@@ -242,8 +243,40 @@ def _read_distribution(root):
     return distributions, links
 
 
+MAX_XML_SIZE_BYTES = 50 * 1024 * 1024
+
+
+def _safe_parse_local_xml(path):
+    """Parse a user-selected local XML after rejecting unsafe declarations.
+
+    ISO 19139 metadata does not require DTDs or custom entity declarations.
+    Rejecting DOCTYPE/ENTITY avoids external-entity and entity-expansion
+    attacks while keeping the plugin dependency-free inside QGIS.
+    """
+    absolute_path = os.path.abspath(path)
+    size = os.path.getsize(absolute_path)
+    if size > MAX_XML_SIZE_BYTES:
+        raise ValueError(
+            "O XML excede o limite de segurança de 50 MB para importação."
+        )
+
+    with open(absolute_path, "rb") as stream:
+        payload = stream.read()
+
+    upper_payload = payload.upper()
+    if b"<!DOCTYPE" in upper_payload or b"<!ENTITY" in upper_payload:
+        raise ValueError(
+            "O XML contém declaração DOCTYPE/ENTITY e foi recusado por segurança."
+        )
+
+    # The payload is a local file explicitly selected by the user and was
+    # screened above for DTD/entity declarations.
+    root = ET.fromstring(payload)  # nosec B314
+    return ET.ElementTree(root)
+
+
 def read_iso19139(path):
-    tree = ET.parse(path)
+    tree = _safe_parse_local_xml(path)
     root = tree.getroot()
     identification = _find_identification(root)
 

@@ -5,13 +5,31 @@ from .metadata_model import MetadataRecord, unique
 from .iso19139_reader import normalize_language
 
 
+LOG_TAG = "MetadadosParaArcGIS"
+
+
+def _log_nonfatal(context, exc):
+    """Record optional/fallback failures instead of silently swallowing them."""
+    try:
+        from qgis.core import Qgis, QgsMessageLog
+        QgsMessageLog.logMessage(
+            f"{context}: {exc}",
+            LOG_TAG,
+            Qgis.MessageLevel.Warning,
+        )
+    except Exception:
+        # Logging itself is optional and must never interrupt metadata export.
+        return
+
+
 def _qdate_to_iso(qdate):
     try:
         if qdate is not None and qdate.isValid():
             # Date-only output is sufficient for ArcGIS citation dates.
             return qdate.date().toString("yyyy-MM-dd")
-    except Exception:
-        pass
+    except Exception as exc:
+        _log_nonfatal("Falha ao converter data do metadado", exc)
+        return ""
     return ""
 
 
@@ -19,8 +37,9 @@ def _qdatetime_to_iso(qdt):
     try:
         if qdt is not None and qdt.isValid():
             return qdt.toString("yyyy-MM-ddTHH:mm:ss")
-    except Exception:
-        pass
+    except Exception as exc:
+        _log_nonfatal("Falha ao converter data/hora do metadado", exc)
+        return ""
     return ""
 
 
@@ -98,8 +117,8 @@ def _read_bbox(metadata, layer):
             box = _transform_rect_to_wgs84(rect, source_crs)
             if box:
                 boxes.append(box)
-        except Exception:
-            continue
+        except Exception as exc:
+            _log_nonfatal("Extensão espacial inválida ignorada", exc)
 
     if not boxes:
         try:
@@ -108,8 +127,8 @@ def _read_bbox(metadata, layer):
             box = _transform_rect_to_wgs84(rect, source_crs)
             if box:
                 boxes.append(box)
-        except Exception:
-            pass
+        except Exception as exc:
+            _log_nonfatal("Não foi possível usar a extensão da camada", exc)
 
     if not boxes:
         return None
@@ -134,8 +153,8 @@ def _read_temporal(metadata):
             end = _qdatetime_to_iso(rng.end())
             if begin or end:
                 result.append((begin, end))
-        except Exception:
-            continue
+        except Exception as exc:
+            _log_nonfatal("Extensão temporal inválida ignorada", exc)
     return result
 
 
@@ -164,8 +183,8 @@ def read_qgis_layer(layer):
             value = _qdate_to_iso(metadata.dateTime(enum_value))
             if value:
                 record.dates[name] = value
-        except Exception:
-            pass
+        except Exception as exc:
+            _log_nonfatal(f"Data de metadado {name} não pôde ser lida", exc)
 
     keywords_map = metadata.keywords() or {}
     record.keyword_groups = {str(k): [str(v) for v in values] for k, values in keywords_map.items()}

@@ -3,7 +3,7 @@
 
 import os
 import re
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # nosec B405 -- used only to construct/write XML
 from datetime import datetime
 
 from .metadata_model import unique
@@ -360,10 +360,7 @@ def build_arcgis_tree(record):
 
 def write_arcgis_xml(record, output_path):
     root = build_arcgis_tree(record)
-    try:
-        ET.indent(root, space="  ")
-    except AttributeError:
-        pass
+    ET.indent(root, space="  ")
 
     os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
     ET.ElementTree(root).write(output_path, encoding="UTF-8", xml_declaration=True)

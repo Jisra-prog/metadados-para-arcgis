@@ -117,7 +117,7 @@ class MetadataArcGISPlugin:
             parent=self.iface.mainWindow(),
         )
         scale_dialog.setWindowIcon(QIcon(os.path.join(self.plugin_dir, "icon.png")))
-        if not scale_dialog.exec_():
+        if not scale_dialog.exec():
             return
 
         reference_scale = scale_dialog.scale_value()
@@ -157,7 +157,7 @@ class MetadataArcGISPlugin:
             self.iface.messageBar().pushMessage(
                 PLUGIN_NAME,
                 "XML ArcGIS exportado com sucesso." + scale_message,
-                level=Qgis.Success,
+                level=Qgis.MessageLevel.Success,
                 duration=9,
             )
             self._show_success(output_path)
@@ -186,7 +186,7 @@ class MetadataArcGISPlugin:
             self.iface.messageBar().pushMessage(
                 PLUGIN_NAME,
                 "XML ISO 19139 convertido com sucesso.",
-                level=Qgis.Success,
+                level=Qgis.MessageLevel.Success,
                 duration=7,
             )
             self._show_success(output_path)
@@ -195,33 +195,33 @@ class MetadataArcGISPlugin:
 
     def _show_success(self, output_path):
         box = QMessageBox(self.iface.mainWindow())
-        box.setIcon(QMessageBox.Information)
+        box.setIcon(QMessageBox.Icon.Information)
         box.setWindowIcon(QIcon(os.path.join(self.plugin_dir, "icon.png")))
         box.setWindowTitle(PLUGIN_NAME)
         box.setText("Arquivo XML criado com sucesso.")
         box.setInformativeText(output_path)
-        open_button = box.addButton("Abrir pasta", QMessageBox.ActionRole)
-        box.addButton(QMessageBox.Ok)
-        box.exec_()
+        open_button = box.addButton("Abrir pasta", QMessageBox.ButtonRole.ActionRole)
+        box.addButton(QMessageBox.StandardButton.Ok)
+        box.exec()
         if box.clickedButton() is open_button:
             QDesktopServices.openUrl(QUrl.fromLocalFile(os.path.dirname(output_path)))
 
     def _show_error(self, exc):
         details = traceback.format_exc()
-        QgsMessageLog.logMessage(details, LOG_TAG, Qgis.Critical)
+        QgsMessageLog.logMessage(details, LOG_TAG, Qgis.MessageLevel.Critical)
         box = QMessageBox(self.iface.mainWindow())
-        box.setIcon(QMessageBox.Critical)
+        box.setIcon(QMessageBox.Icon.Critical)
         box.setWindowIcon(QIcon(os.path.join(self.plugin_dir, "icon.png")))
         box.setWindowTitle(PLUGIN_NAME)
         box.setText("Não foi possível gerar o XML.")
         box.setInformativeText(str(exc))
         box.setDetailedText(details)
-        box.exec_()
+        box.exec()
 
     def show_about(self):
         dialog = AboutDialog(self.iface.mainWindow())
         dialog.setWindowIcon(QIcon(os.path.join(self.plugin_dir, "icon.png")))
-        dialog.exec_()
+        dialog.exec()
 
     @staticmethod
     def _safe_filename(name):
