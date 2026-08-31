@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.1
+## 1.2.1 — estável
 
 - Corrige a ausência da Faixa de Escala no XML quando o usuário informa somente a escala de referência.
 - Restaura a janela de escala simples da versão 1.1.
@@ -14,6 +14,8 @@
   - Jorge Jisra;
   - Andresa Dornelas de Castro.
 - Mantém a identificação institucional MIDR / Departamento de Obras Hídricas / SNSH.
+- Versão validada no QGIS 3.44.13 e no ArcGIS Pro.
+- Marcada como estável para publicação (`experimental=False`).
 
 ## 1.2.0
 
