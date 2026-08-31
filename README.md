@@ -47,11 +47,13 @@ No QGIS:
 
 ## Publicação
 
-Repositório planejado:
+A versão **1.2.1 foi validada no QGIS 3.44.13 e no ArcGIS Pro** e está preparada como versão estável para submissão ao repositório oficial do QGIS.
+
+Repositório:
 
 `https://github.com/Jisra-prog/metadados-para-arcgis`
 
-Antes do envio ao repositório oficial do QGIS ainda deve ser definido um **e-mail público de contato** no `metadata.txt` e a versão deve ser marcada como estável (`experimental=False`) após os testes finais.
+Contato público do plugin: `Isilvajorge3@gmail.com`.
 
 ## Licença
 
