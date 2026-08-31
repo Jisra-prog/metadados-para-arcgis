@@ -1,0 +1,17 @@
+[general]
+name=Metadados para ArcGIS
+qgisMinimumVersion=3.44
+description=Exports QGIS layer metadata to ArcGIS-compatible XML and converts ISO 19139/MGB metadata.
+version=1.2.1
+author=Jorge Jisra; Andresa Dornelas de Castro
+email=
+about=Metadados para ArcGIS exports QGIS layer metadata and ISO 19139/MGB metadata to ArcGIS-compatible XML. Plugin desenvolvido por Jorge Jisra e Andresa Dornelas de Castro no âmbito do Ministério da Integração e do Desenvolvimento Regional (MIDR), no Departamento de Obras Hídricas da Secretaria Nacional de Segurança Hídrica (SNSH).
+category=Vector
+tags=metadata,ArcGIS,QGIS,XML,ISO 19139,MGB,geoprocessing
+homepage=https://github.com/Jisra-prog/metadados-para-arcgis
+repository=https://github.com/Jisra-prog/metadados-para-arcgis
+tracker=https://github.com/Jisra-prog/metadados-para-arcgis/issues
+icon=icon.png
+experimental=True
+deprecated=False
+server=False
